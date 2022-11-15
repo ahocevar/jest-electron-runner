@@ -5,6 +5,7 @@
  * See LICENSE.md for licensing information.
  */
 
+import { enable as enableRemote } from "@electron/remote/main";
 import type { TestResult } from "@jest/test-result";
 import { BrowserWindow, ipcMain } from "electron";
 
@@ -44,6 +45,7 @@ async function runInBrowserWindow(testData: IPCTestData): Promise<TestResult> {
                 contextIsolation: false
             }
         });
+        enableRemote(win.webContents);
 
         win.webContents.on("console-message", (event, level, message, line, sourceId) => {
             if (/\bdeprecated\b/i.exec(message) != null) {
